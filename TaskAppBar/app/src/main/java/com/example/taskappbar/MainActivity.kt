@@ -83,18 +83,35 @@ fun MySearchField(modificador: Modifier){
 fun MyTaskWidget(
     modificador: Modifier,
     taskName: String
-    ){
-    Column(modifier = modificador
-        .border(width = 1.dp, color = Color.Black)
-        .padding(3.dp)
-    ) {
-        Text(text = taskName,
-        fontSize = 20.sp,
-        fontWeight = FontWeight.Bold,
-        fontStyle = FontStyle.Italic
+    taskDetails: String,
+    deadEndDate: Date
+   ) {
+    val dateFormatter = SimpleDateFormat("EEE, MMM dd, YYYY", locale.getDefault())
+    Row(modifier = modificador) {
+        Icon(
+            imageVector = Icons.Default.Notifications,
+            contentDescription = "Icons of a pendent task"
         )
     }
-
+    Column(
+        modifier = modificador
+            .border(width = 1.dp, color = Color.Black)
+            .padding(3.dp)
+    ) {
+        Text(
+            text = taskName,
+            fontSize = 20.sp,
+            fontWeight = FontWeight.Bold,
+            fontStyle = FontStyle.Italic
+        )
+        Text(
+            text = taskDetails,
+            fontSize = 10.sp,
+            fontWeight = FontWeight.Normal,
+            fontStyle = FontStyle.Normal
+        )
+    }//coluna/Column
+  }//Row(modifier = modificador)
 }// Fun minha tarefaX "MyTaskWidget"
 
 
