@@ -47,6 +47,15 @@ fun MainScreenContent() {
                  }
              )
     },
+        drawerContent = {
+            //Drawer header
+            Box(
+                modifier = Modifier
+                    .background(Color.Magenta)
+                    .height(16.dp)
+            )
+            {Text(Text = "Opções!!!")}
+        }
         content = {
                 paddingValues -> Log.i("paddingValues", "$paddingValues")
             Column(
