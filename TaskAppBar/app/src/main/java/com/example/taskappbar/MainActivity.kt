@@ -36,8 +36,16 @@ class MainActivity : ComponentActivity() {
 fun MainScreenContent() {
     Scaffold(
         topBar = {
-                TopAppBar( content = { Text(text = "TaskAppBar")}
-                )
+                TopAppBar(
+                    title = { Text(text = "TaskTodayApp")},
+                    navigationIcon = {
+                        IconsButton(onClick = {TODO}){
+                        Icons(
+                            imageVector = Icons.Default.Menu,
+                            contentDescription = "Drawer Menu")
+                    }
+                 }
+             )
     },
         content = {
                 paddingValues -> Log.i("paddingValues", "$paddingValues")
@@ -123,6 +131,7 @@ fun MyTaskWidget(
         )
     }//coluna/Column
   }//Row(modifier = modificador)
+    Spacer(modifier = Modifier.height(16.dp))
 }// Fun minha tarefaX "MyTaskWidget"
 
 
