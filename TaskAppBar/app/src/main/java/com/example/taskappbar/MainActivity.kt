@@ -47,8 +47,10 @@ fun MainScreenContent() {
                 .fillMaxSize()
         ) {
                 MySearchField(modificador = Modifier.fillMaxWidth())
-                MyTaskWidget(modificador = Modifier.fillMaxWidth(),
-                taskName = "Tarefa 1")
+                MyTaskWidget(
+                    modificador = Modifier.fillMaxWidth(),
+                    taskName = "Tarefa 1",
+                taskDetails = "É bem melhor usar lazilist ao inves de colum")
             Text(text = "Task1")
             Text(text = "Task2")
             Text(text = "Task3")
