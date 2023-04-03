@@ -49,12 +49,16 @@ fun MainScreenContent() {
                 MySearchField(modificador = Modifier.fillMaxWidth())
                 MyTaskWidget(
                     modificador = Modifier.fillMaxWidth(),
-                    taskName = "Tarefa 1",
-                taskDetails = "É bem melhor usar lazilist ao inves de colum")
-            Text(text = "Task1")
-            Text(text = "Task2")
-            Text(text = "Task3")
-            Text(text = "Task4")
+                    taskName = "Preparar aula Lazylist / Lazy/column",
+                    taskDetails = "É bem melhor usar lazilist ao inves de colum",
+                    deadEndDate = Date()
+                  )
+                MyTaskWidget(
+                    modificador = Modifier.fillMaxWidth(),
+                    taskName = "Prova Matematica",
+                    taskDetails = "Estudar Calculo capitulo 1 e 2",
+                    deadEndDate = Date()
+                )
            }
         },
         bottomBar = {
@@ -88,13 +92,20 @@ fun MyTaskWidget(
    ) {
     val dateFormatter = SimpleDateFormat("EEE, MMM dd, YYYY", locale.getDefault())
     Row(modifier = modificador) {
+        Column(){
         Icon(
             imageVector = Icons.Default.Notifications,
             contentDescription = "Icons of a pendent task"
         )
-    }
+            Text(
+                text = dateFormatter.format(deadEndDate),
+                fontWeight = FonrWeight.Bold,
+                fontStyle = FontStyle.Italic,
+                fontSize = 12.sp
+            )
+    }//coluna icone e data // abaixo columa do taskname e task details
     Column(
-        modifier = modificador
+        modifier = modifier
             .border(width = 1.dp, color = Color.Black)
             .padding(3.dp)
     ) {
