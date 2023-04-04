@@ -41,8 +41,13 @@ fun MainScreenContent(drawerState: DrawerStated) {
                 TopAppBar(
                     title = { Text(text = "TaskTodayApp")},
                     navigationIcon = {
-                        IconsButton(onClick = {scaffordState.drawerState.open()}){
-                        Icons(
+                        IconsButton(onClick = {
+                            CoroutineScope(Dispatchers.Default).launch {
+                                scaffordState.drawerState.open()
+                            }
+                        }
+                        ) {
+                        Icon(
                             imageVector = Icons.Default.Menu,
                             contentDescription = "Drawer Menu")
                     }
