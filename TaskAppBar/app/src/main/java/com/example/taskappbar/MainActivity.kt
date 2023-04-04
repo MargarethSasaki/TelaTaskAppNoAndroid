@@ -33,13 +33,15 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun MainScreenContent() {
+fun MainScreenContent(drawerState: DrawerStated) {
+    val scaffordState = rememberScaffordState( drawerState = drawerState)
     Scaffold(
+        scaffordState = scaffordState,
         topBar = {
                 TopAppBar(
                     title = { Text(text = "TaskTodayApp")},
                     navigationIcon = {
-                        IconsButton(onClick = {TODO}){
+                        IconsButton(onClick = {scaffordState.drawerState.open()}){
                         Icons(
                             imageVector = Icons.Default.Menu,
                             contentDescription = "Drawer Menu")
@@ -47,6 +49,8 @@ fun MainScreenContent() {
                  }
              )
     },
+        drawerBackgroundColor = Color.Red,
+        drawerGesturesEnabled = drawerState.isOpen,
         drawerContent = {
             //Drawer header
             Box(
@@ -55,6 +59,12 @@ fun MainScreenContent() {
                     .height(16.dp)
             )
             {Text(Text = "Opções!!!")}
+        }
+                //Drawer content
+                Column(){
+                    Text(text = "Opcao de menu 1")
+                    Text(text = "Opcao de menu 2")
+                    Text(text = "Opcao de menu 3")
         }
         content = {
                 paddingValues -> Log.i("paddingValues", "$paddingValues")
