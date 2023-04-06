@@ -1,17 +1,17 @@
 package com.example.taskappbar
 
+import android.icu.text.SimpleDateFormat
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -22,6 +22,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.taskappbar.ui.theme.TaskAppBarTheme
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import java.util.*
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,17 +37,18 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun MainScreenContent(drawerState: DrawerStated) {
-    val scaffordState = rememberScaffordState( drawerState = drawerState)
+fun MainScreenContent() {
+    val drawerState = rememberDrawerState(DrawerValue.Closed)
+    val scaffoldState = rememberScaffoldState( drawerState = drawerState)
     Scaffold(
-        scaffordState = scaffordState,
+        scaffoldState = scaffoldState,
         topBar = {
                 TopAppBar(
                     title = { Text(text = "TaskTodayApp")},
                     navigationIcon = {
-                        IconsButton(onClick = {
+                        IconButton(onClick = {
                             CoroutineScope(Dispatchers.Default).launch {
-                                scaffordState.drawerState.open()
+                                scaffoldState.drawerState.open()
                             }
                         }
                         ) {
@@ -62,15 +67,17 @@ fun MainScreenContent(drawerState: DrawerStated) {
                 modifier = Modifier
                     .background(Color.Magenta)
                     .height(16.dp)
-            )
-            {Text(Text = "Opções!!!")}
-        }
-                //Drawer content
-                Column(){
-                    Text(text = "Opcao de menu 1")
-                    Text(text = "Opcao de menu 2")
-                    Text(text = "Opcao de menu 3")
-        }
+            ) {
+                Text(text = "Opções!!!")
+            }
+            //Drawer content
+            Column() {
+                Text(text = "Opcao de menu 1")
+                Text(text = "Opcao de menu 2")
+                Text(text = "Opcao de menu 3")
+            }
+        },
+
         content = {
                 paddingValues -> Log.i("paddingValues", "$paddingValues")
             Column(
@@ -118,11 +125,11 @@ fun MySearchField(modificador: Modifier){
 @Composable
 fun MyTaskWidget(
     modificador: Modifier,
-    taskName: String
+    taskName: String,
     taskDetails: String,
     deadEndDate: Date
    ) {
-    val dateFormatter = SimpleDateFormat("EEE, MMM dd, YYYY", locale.getDefault())
+    val dateFormatter = SimpleDateFormat("EEE, MMM dd, YYYY", Locale.getDefault())
     Row(modifier = modificador) {
         Column(){
         Icon(
@@ -131,13 +138,13 @@ fun MyTaskWidget(
         )
             Text(
                 text = dateFormatter.format(deadEndDate),
-                fontWeight = FonrWeight.Bold,
+                fontWeight = FontWeight.Bold,
                 fontStyle = FontStyle.Italic,
                 fontSize = 12.sp
             )
     }//coluna icone e data // abaixo columa do taskname e task details
     Column(
-        modifier = modifier
+        modifier = modificador
             .border(width = 1.dp, color = Color.Black)
             .padding(3.dp)
     ) {
