@@ -102,7 +102,7 @@ fun MainScreenContent() {
         },
         bottomBar = {
             BottomAppBar(
-                content = { Text("assdfg")}
+                content = { Text("@All Copyrights reserved by my teacher")}
             )
         },
     )//fechando Scaffold
