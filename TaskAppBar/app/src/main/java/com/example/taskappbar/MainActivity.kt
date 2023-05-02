@@ -41,26 +41,27 @@ fun MainScreenContent() {
 
     val scaffoldState = rememberScaffoldState( drawerState = drawerState)
     var scope = rememberCoroutineScope()
+    var tabIndex = by remember {mutableStateOf(0)}
     Scaffold(
         scaffoldState = scaffoldState,
         topBar = {
-                TopAppBar(
-                    title = { Text(text = "TaskTodayApp")},
+            TopAppBar(
+                title = { Text(text = "TaskTodayApp")},
 
-                    navigationIcon = {
-                        IconButton(onClick = {
-                            scope.launch {
-                                scaffoldState.drawerState.open()
-                            }
+                navigationIcon = {
+                    IconButton(onClick = {
+                        scope.launch {
+                            scaffoldState.drawerState.open()
                         }
-                        ) {
+                    }
+                    ) {
                         Icon(
                             imageVector = Icons.Default.Menu,
                             contentDescription = "Drawer Menu")
                     }
-                 }
-             )
-    },
+                }
+            )
+        },
         drawerBackgroundColor = Color.Red,
         drawerGesturesEnabled = drawerState.isOpen,
         drawerContent = {
@@ -83,37 +84,72 @@ fun MainScreenContent() {
         content = {
                 paddingValues -> Log.i("paddingValues", "$paddingValues")
             Column(
-            modifier = Modifier
-                .background(Color.Yellow)
-                .fillMaxSize()
-        ) {
+                modifier = Modifier
+                    .background(Color.Yellow)
+                    .fillMaxSize()
+            ) {
                 MySearchField(modificador = Modifier.fillMaxWidth())
-                MyTaskWidgetList()
-                MyTaskWidget(
-                    modificador = Modifier.fillMaxWidth(),
-                    taskName = "Preparar aula Lazylist / Lazy/column",
-                    taskDetails = "É bem melhor usar lazilist ao inves de colum",
-                    deadEndDate = Date()
+
+                val calendar = Calendar.getInstance()
+
+                listOf<Tarefa>(
+                    Tarefa(
+                        "Estudar Prova de Calculo", "livro de matematica",
+                        Date(),
+                        calendar.set(2023,)
+                    )
                 )
-                MyTaskWidget(
-                    modificador = Modifier.fillMaxWidth(),
-                    taskName = "Prova Matematica",
-                    taskDetails = "Estudar Calculo capitulo 1 e 2",
-                    deadEndDate = Date()
+
+                val tProvaDeCalculo = Tarefa(
+                    "Estudar prova de calculo",
+                    "livro de matematica",
+                    Date(),
+                    Date(),
+                    status = 0.0
+
                 )
-           }
+                val tProvaDeKotlin = Tarefa(
+                    "Estudar prova de calculo",
+                    "livro de matematica",
+                    Date(),
+                    Date(),
+                    status = 0.0
+
+                )
+
+                var minhaListaDeTarefas = ListOf<Tarefa>(tProvaDeCalculo, tProvaDeKotlin)
+
+                MyTaskWidgetList(minhaListaDeTarefas)
+            }//Conteudo da coluna/column
+
         },
         bottomBar = {
             BottomAppBar(
                 content = { Text("@All Copyrights reserved by my teacher")}
             )
         },
+        isFloatingActionButtonDocked = false,
+        floatingActionButton = { ExtendedFloatingActionButton(
+            icon = {
+                Icon(
+                    imageVector = Icons.Default.AddCircle,
+                    contentDescription = "Add Task"
+                )
+            },
+            text = {Text(text = "ADD")},
+            onClick = {}
+        )}
     )//fechando Scaffold
 }// fun MainScreenContent()
 
 @Composable
 
 fun MyTaskWidgetList(listaDeTarefas: list<Tarefa>){
+    listaDeTarefas.forEach(
+        action = {
+            MyTaskWidget(modificador.fillMaxWidth(), tarefaASerMostrada = it)
+
+        })
 
 
 }
@@ -136,43 +172,41 @@ fun MySearchField(modificador: Modifier){
 @Composable
 fun MyTaskWidget(
     modificador: Modifier,
-    taskName: String,
-    taskDetails: String,
-    deadEndDate: Date
-   ) {
+    tarefaASerMostrada: Tarefa
+) {
     val dateFormatter = SimpleDateFormat("EEE, MMM dd, YYYY", Locale.getDefault())
     Row(modifier = modificador) {
         Column(){
-        Icon(
-            imageVector = Icons.Default.Notifications,
-            contentDescription = "Icons of a pendent task"
-        )
+            Icon(
+                imageVector = Icons.Default.Notifications,
+                contentDescription = "Icons of a pendent task"
+            )
             Text(
-                text = dateFormatter.format(deadEndDate),
-                fontWeight = FontWeight.Bold,
-                fontStyle = FontStyle.Italic,
+                text = dateFormatter.format(tarefaASerMostrada.pzoFinal),
+                fontWeight = FontWeight.Normal,
+                fontStyle = FontStyle.Normal,
                 fontSize = 12.sp
             )
-    }//coluna icone e data // abaixo columa do taskname e task details
-    Column(
-        modifier = modificador
-            .border(width = 1.dp, color = Color.Black)
-            .padding(3.dp)
-    ) {
-        Text(
-            text = taskName,
-            fontSize = 20.sp,
-            fontWeight = FontWeight.Bold,
-            fontStyle = FontStyle.Italic
-        )
-        Text(
-            text = taskDetails,
-            fontSize = 10.sp,
-            fontWeight = FontWeight.Normal,
-            fontStyle = FontStyle.Normal
-        )
-    }//coluna/Column
-  }//Row(modifier = modificador)
+        }//coluna icone e data // abaixo columa do taskname e task details
+        Column(
+            modifier = modificador
+                .border(width = 1.dp, color = Color.Black)
+                .padding(3.dp)
+        ) {
+            Text(
+                text = tarefaASerMostrada.nome,
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Bold,
+                fontStyle = FontStyle.Italic
+            )
+            Text(
+                text = tarefaASerMostrada.detales,
+                fontSize = 10.sp,
+                fontWeight = FontWeight.Normal,
+                fontStyle = FontStyle.Normal
+            )
+        }//coluna/Column
+    }//Row(modifier = modificador)
     Spacer(modifier = Modifier.height(16.dp))
 }// Fun minha tarefaX "MyTaskWidget"
 
