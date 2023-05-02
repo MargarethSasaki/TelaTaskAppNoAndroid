@@ -31,23 +31,25 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            MainScreenContent()
+            MainScreenContent(DrawerState(initialValue = DrawerValue.Closed))
         }
     }
 }
 
 @Composable
 fun MainScreenContent() {
-    val drawerState = rememberDrawerState(DrawerValue.Closed)
+
     val scaffoldState = rememberScaffoldState( drawerState = drawerState)
+    var scope = rememberCoroutineScope()
     Scaffold(
         scaffoldState = scaffoldState,
         topBar = {
                 TopAppBar(
                     title = { Text(text = "TaskTodayApp")},
+
                     navigationIcon = {
                         IconButton(onClick = {
-                            CoroutineScope(Dispatchers.Default).launch {
+                            scope.launch {
                                 scaffoldState.drawerState.open()
                             }
                         }
@@ -86,12 +88,13 @@ fun MainScreenContent() {
                 .fillMaxSize()
         ) {
                 MySearchField(modificador = Modifier.fillMaxWidth())
+                MyTaskWidgetList()
                 MyTaskWidget(
                     modificador = Modifier.fillMaxWidth(),
                     taskName = "Preparar aula Lazylist / Lazy/column",
                     taskDetails = "É bem melhor usar lazilist ao inves de colum",
                     deadEndDate = Date()
-                  )
+                )
                 MyTaskWidget(
                     modificador = Modifier.fillMaxWidth(),
                     taskName = "Prova Matematica",
@@ -107,6 +110,14 @@ fun MainScreenContent() {
         },
     )//fechando Scaffold
 }// fun MainScreenContent()
+
+@Composable
+
+fun MyTaskWidgetList(listaDeTarefas: list<Tarefa>){
+
+
+}
+
 
 @Composable
 fun MySearchField(modificador: Modifier){
@@ -169,5 +180,5 @@ fun MyTaskWidget(
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
-    MainScreenContent()
+    MainScreenContent(DrawerState(initialValue = DrawerValue.Closed))
 }
